@@ -4,7 +4,10 @@ author: "Marta Garcia"
 date: "4/27/2017"
 output: html_document
 ---
-
+# include the two campsites
+# include the bodies of water
+# include the parking area
+# include the research areas / challenge courses
 ```{r}
 library(tidyverse)
 library(macleish)
@@ -12,32 +15,29 @@ library(rgeos)
 library(sp)
 library(leaflet)
 
-macleish_layers[["trails"]] %>%
-  plot()
-
+# add both campsites to leaflet plot
 group_campsite <- data.frame(lat = 42.450976, lon = -72.678154)
+remote_campsite <- data.frame(lat = 42.458570, lon =  -72.674732)
+parking <- data.frame(lat = 42.448013, lon = -72.680663)
 leaflet() %>%
   addTiles() %>%
-  addMarkers(lng = ~lon, lat = ~lat, data = trails,
-             popup = "trails on Macleish")
+  addMarkers(lng = ~lon, lat = ~lat, data = group_campsite,
+             popup = "Group Campsite") %>%
+  addMarkers(lng = ~lon, lat = ~lat, data = remote_campsite,
+             popup = "Remote Campsite") %>%
+
+  addPolylines(data = macleish_layers[["trails"]],
+              color = "brown", popup = "trails") %>%
+  addPolylines(data = macleish_layers[["streams"]],
+               popup = "streams") %>%
+  addPolylines(data = macleish_layers[["forests"]],
+               color = "green", popup = "forests") %>%
+  addMarkers(lng = ~lon, lat = ~lat, data = parking,
+              popup = "Parking") %>%
+  addMarkers(data = macleish_layers[["challenge_courses"]],
+              aes(color = "red"), popup = "Challenge Course") %>%
+  addMarkers(data = macleish_layers[["research"]],
+              aes(color = "red"), popup = "Research") %>%
+  addCircles(lng = ~lon, lat = ~lat, data = parking,
+             radius = 804.672, popup = "Parking Away")
 ```
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
