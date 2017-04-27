@@ -10,8 +10,16 @@ library(tidyverse)
 library(macleish)
 library(rgeos)
 library(sp)
+library(leaflet)
 
+macleish_layers[["trails"]] %>%
+  plot()
 
+group_campsite <- data.frame(lat = 42.450976, lon = -72.678154)
+leaflet() %>%
+  addTiles() %>%
+  addMarkers(lng = ~lon, lat = ~lat, data = trails,
+             popup = "trails on Macleish")
 ```
 
 ## R Markdown
