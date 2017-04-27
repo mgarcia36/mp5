@@ -1,0 +1,65 @@
+---
+title: "FinalProject"
+author: "Mirella Hernandez"
+date: "April 27, 2017"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+install.packages("macleish")
+library(macleish)
+```
+
+```{r}
+install.packages("sp")
+library(sp)
+
+```
+
+
+```{r}
+names(macleish_layers)
+```
+
+```{r}
+macleish_layers[["landmarks"]] %>%
+  summary()
+```
+
+
+
+
+
+```{r}
+macleish_layers[["trails"]] %>%
+  plot()
+```
+
+
+```{r}
+Group_Campsite <- data.frame(lat = 42.450976, lon =  -72.678154)
+```
+
+
+```{r}
+install.packages("leaflet")
+library(leaflet)
+```
+
+
+```{r}
+
+leaflet() %>%
+  addTiles() %>%
+  addMarkers(lng = ~lon, lat = ~lat, data = Group_Campsite,
+    popup = "Campsite")
+```
+
+
+
+
+
