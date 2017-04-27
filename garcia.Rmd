@@ -34,10 +34,7 @@ leaflet() %>%
                color = "green", popup = "forests") %>%
   addMarkers(lng = ~lon, lat = ~lat, data = parking,
               popup = "Parking") %>%
-  addMarkers(data = macleish_layers[["challenge_courses"]],
-              aes(color = "red"), popup = "Challenge Course") %>%
-  addMarkers(data = macleish_layers[["research"]],
-              aes(color = "red"), popup = "Research") %>%
+
   addCircles(lng = ~lon, lat = ~lat, data = parking,
              radius = 804.672, popup = "Parking Away")
 ```
