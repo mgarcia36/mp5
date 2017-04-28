@@ -11,7 +11,6 @@ library(tidyverse)
 
 ```{r}
 install.packages("macleish")
-library(macleish)
 ```
 
 ```{r}
@@ -34,16 +33,6 @@ macleish_layers[["landmarks"]] %>%
 
 
 
-```{r}
-macleish_layers[["trails"]] %>%
-  plot()
-```
-
-
-```{r}
-Group_Campsite <- data.frame(lat = 42.450976, lon =  -72.678154)
-```
-
 
 ```{r}
 install.packages("leaflet")
@@ -51,15 +40,79 @@ library(leaflet)
 ```
 
 
-```{r}
 
-leaflet() %>%
-  addTiles() %>%
-  addMarkers(lng = ~lon, lat = ~lat, data = Group_Campsite,
-    popup = "Campsite")
+```{r}
+install.packages("rgeos")
+```
+
+```{r}
+library(rgeos)
 ```
 
 
 
+```{r}
+group_campsite <- data.frame(lat = 42.450976, lon = -72.678154)
+remote_campsite <- data.frame(lat = 42.458570, lon =  -72.674732)
+parking <- data.frame(lat = 42.448013, lon = -72.680663)
+leaflet() %>%
+  addTiles() %>%
+  
+  addMarkers(lng = ~lon, lat = ~lat, data = group_campsite,
+             popup = "Group Campsite") %>%
+  addMarkers(lng = ~lon, lat = ~lat, data = remote_campsite,
+             popup = "Remote Campsite") %>%
 
+  addPolylines(data = macleish_layers[["trails"]],
+              color = "brown", popup = "trails") %>%
+  addPolylines(data = macleish_layers[["streams"]],
+               popup = "streams") %>%
+  addPolylines(data = macleish_layers[["forests"]],
+               color = "green", popup = "forests") %>%
+  addMarkers(lng = ~lon, lat = ~lat, data = parking,
+              popup = "Parking") %>%
+
+  addCircles(lng = ~lon, lat = ~lat, data = parking,
+             radius = 804.672, popup = "Parking Away")
+```
+
+
+```{r}
+url <- "http://wsgw.mass.gov/data/gispub/shape/state/contours250k.zip"
+download.file(url, destfile = basename(url))
+unzip("contours250k.zip", exdir = "contours")
+```
+
+```{r}
+library(rgdal)
+dsn <- path.expand("Contours")
+dsn
+list.files(dsn)
+
+```
+
+
+```{r}
+ogrListLayers(dsn)
+```
+
+
+
+```{r}
+
+ogrInfo(dsn, layer = "CONTOURS250K_ARC")
+```
+
+```{r}
+contours <- readOGR(dsn, "CONTOURS250K_ARC")
+summary(contours)
+```
+
+```{r}
+plot(contours)
+```
+
+```{r}
+proj4string(contours)
+```
 
