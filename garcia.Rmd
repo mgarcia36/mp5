@@ -15,10 +15,12 @@ library(rgeos)
 library(sp)
 library(leaflet)
 
+# how to map the challenge courses? (12)
 # add both campsites to leaflet plot
 group_campsite <- data.frame(lat = 42.450976, lon = -72.678154)
 remote_campsite <- data.frame(lat = 42.458570, lon =  -72.674732)
 parking <- data.frame(lat = 42.448013, lon = -72.680663)
+
 leaflet() %>%
   addTiles() %>%
   addMarkers(lng = ~lon, lat = ~lat, data = group_campsite,
@@ -30,10 +32,13 @@ leaflet() %>%
               color = "brown", popup = "trails") %>%
   addPolylines(data = macleish_layers[["streams"]],
                popup = "streams") %>%
-  addPolylines(data = macleish_layers[["forests"]],
+  addPolygons(data = macleish_layers[["forests"]],
                color = "green", popup = "forests") %>%
   addMarkers(lng = ~lon, lat = ~lat, data = parking,
               popup = "Parking") %>%
+  addPolygons(data = macleish_layers[["research"]],
+              color = "red", popup = "research") %>%
+  addMarkers((coordinates = ~lon, ~lat), data = macleish_layers[["challenge_courses"]]) %>%
 
   addCircles(lng = ~lon, lat = ~lat, data = parking,
              radius = 804.672, popup = "Parking Away")
