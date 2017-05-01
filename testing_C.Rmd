@@ -1,0 +1,66 @@
+---
+title: "testing Mirella"
+author: "Mirella Hernandez"
+date: "May 1, 2017"
+output: html_document
+---
+
+
+
+
+```{r}
+library(dplyr)
+library(rgdal)
+library(rgeos)
+library(macleish)
+```
+
+
+
+
+
+
+```{r}
+# Download terrain data for Whatley
+url <- "http://wsgw.mass.gov/data/gispub/shape/contours5k/hp337.zip"
+download.file(url, destfile = basename(url))
+unzip("hp337.zip", exdir = "whately_contours")
+
+# Load and transform
+whately_GIS_data <- path.expand("whately_contours")
+whately_contours <- readOGR(whately_GIS_data, "hp337") %>%
+  spTransform(CRS("+init=epsg:4326"))
+# Download terrain data for Conway
+url <- "http://wsgw.mass.gov/data/gispub/shape/contours5k/hp68.zip"
+download.file(url, destfile = basename(url))
+unzip("hp68.zip", exdir = "conway_contours")
+
+# Load and transform
+conway_GIS_data <- path.expand("conway_contours")
+conway_contours <- readOGR(conway_GIS_data, "hp68") %>%
+  spTransform(CRS("+init=epsg:4326"))
+# Merge the contours for both towns, then intersect with the boundary of Macleish
+macleish_contours <-
+  gUnion(conway_contours, whately_contours) %>%
+  gIntersection(macleish_layers[['boundary']])
+
+# They're huuuuuge, so let's delete the rest 
+# of the contours now that we have what we want
+remove(whately_contours, conway_contours)
+# What happens when you intersect lines?
+trail_points <- macleish_contours %>%
+  gIntersection(macleish_layers[['trails']])
+Draw map
+
+library(leaflet)
+m <- leaflet() %>%
+  addTiles() %>%
+  addPolylines(data = macleish_contours, weight = 1, color = "black") %>%
+  addPolylines(data = macleish_layers[["boundary"]], weight = 2, color = "green") %>%
+  addPolylines(data = macleish_layers[["trails"]], weight = 3, color = "red") %>%
+  addCircleMarkers(data = trail_points, radius = 2, color = "red")
+m
+```
+
+
+
