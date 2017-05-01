@@ -58,6 +58,9 @@ parking <- data.frame(lat = 42.448013, lon = -72.680663)
 leaflet() %>%
   addTiles() %>%
   
+  ##
+  addProviderTiles("Esri.WorldTopoMap", group = "Topography") %>%
+  
   addMarkers(lng = ~lon, lat = ~lat, data = group_campsite,
              popup = "Group Campsite") %>%
   addMarkers(lng = ~lon, lat = ~lat, data = remote_campsite,
@@ -111,6 +114,13 @@ summary(contours)
 ```{r}
 plot(contours)
 ```
+
+1.add tiles (provider tile)*********
+add macleish layer (contours)
+web: world something 
+group toppgraphy
+
+
 
 ```{r}
 proj4string(contours)
