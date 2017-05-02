@@ -59,7 +59,7 @@ parking <- data.frame(lat = 42.448013, lon = -72.680663)%>%
 
 
 
-parking_buffed <- streams_aea %>%
+parking_buffed <- parking %>%
   gBuffer(width = 10) %>%
   spTransform(CRS("+init=epsg:4326"))
 
