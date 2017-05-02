@@ -82,7 +82,10 @@ leaflet() %>%
               popup = "Parking") %>%
 
   addCircles(lng = ~lon, lat = ~lat, data = parking,
-             radius = 804.672, popup = "Parking Away")
+             radius = 804.672, popup = "Parking Away")%>%
+   addCircleMarkers(  color="orange",data = macleish_layers[["challenge_courses"]])%>%
+  addPolygons(data = macleish_layers[["research"]],
+              color = "red", popup = "research")
 
   
 ```
