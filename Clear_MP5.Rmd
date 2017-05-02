@@ -1,0 +1,101 @@
+---
+title: "Choose New Campsite Location"
+author: "Minyue Dai"
+date: "5/2/2017"
+output: html_document
+---
+
+### Background Information
+
+Currently, Smith has two campsites and decides to choose the location for a new campsite based on these standards:
+
+1. Approximately half a mile walk from the parking area
+2. Within 200' of a stream or other source of water
+3. In forest that is unlike the forest in the two other campsites
+4. Relatively flat
+5. At least 500' from any research area or any element of the Challenge Course
+
+We have a map encoding these information and then give 2 suggestions.
+
+
+```{r setup, include=FALSE}
+# Load all libraries
+library(tidyverse)
+library(macleish)
+library(rgeos)
+library(sp)
+library(leaflet)
+library(rgdal)
+library(dplyr)
+```
+
+```{r}
+# Set up some special points
+group_campsite <- data.frame(lat = 42.450976, lon = -72.678154)
+remote_campsite <- data.frame(lat = 42.458570, lon =  -72.674732)
+parking <- data.frame(lat = 42.448013, lon = -72.680663)
+```
+
+```{r}
+#Create the map
+leaflet() %>%
+  addTiles() %>%
+  addMarkers(lng = ~lon, lat = ~lat, data = group_campsite,
+             popup = "Group Campsite") %>%
+  addMarkers(lng = ~lon, lat = ~lat, data = remote_campsite,
+             popup = "Remote Campsite") %>%
+  addProviderTiles("Esri.WorldTopoMap", group = "Topography") %>%
+  addPolylines(data = macleish_layers[["trails"]],
+              color = "brown", popup = "trails") %>%
+  addPolylines(data = macleish_layers[["streams"]],
+               popup = "streams") %>%
+  addPolygons(data = macleish_layers[["forests"]],
+               color = "green", popup = "forests") %>%
+  addMarkers(lng = ~lon, lat = ~lat, data = parking,
+              popup = "Parking") %>%
+  addPolygons(data = macleish_layers[["research"]],
+              color = "red", popup = "research") %>%
+  addCircles(lng = ~lon, lat = ~lat, data = parking,
+             radius = 804.672, popup = "Parking Away") %>%
+  addCircleMarkers( popup = "challenge_courses", color="orange",data = macleish_layers[["challenge_courses"]])
+```
+
+### Data Description
+
+We use several data to locate the new campsite we want.
+
+Group Campsite, Remove Campsite, Parking: These are three blue point marker. 
+
+trails: This spcifies a brown line for all trails.
+
+streams: This spcifies a blue line for all streams. 
+
+forests: Green grid shows all forests. 
+
+research: All small red polygons illustrate the location of research area.
+
+challenge_courses: All small orange circles illustrate the location of elements of
+challenge courses.
+
+####External Information:
+
+Esri.WorldTopoMap: Gray contour lines specify the elevation. 
+
+### Analysis of Suggestions
+
+First, the new campsite should be around half a mile from the parking area, which what the blue circle illustrates, and two suggestions are both near to the edge. Also, both suggestions are closed to blue lines, which are water scource. They are both far from the red and orange polygons, so they are far from the elements of research and challenge courses. In addition, they are in the green grids so they are in the forests, which are differernt from those of existed campsites.
+
+Considering the contour lines on the map, both suggestions are located at area with not so much lines, so they are relatively flat. 
+
+### Recommended Actions
+
+Here are some recommended actions for Smith:
+
+1. Smith can employ professional companies to evaluate the locations 
+we suggest.
+
+2. Cost should be evaluated in this project, so professional companies may 
+report the estimated cost for both suggested locations. 
+
+3. Students' opnions are important, so Smith can invite interested students 
+to visit these two suggested locations, so they can give their opinions. 
