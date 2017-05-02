@@ -50,16 +50,37 @@ library(rgeos)
 ```
 
 
+#THIS
+```{r}
 
+proj4_aea <- "+proj=aea +lat_1=29.5 +lat_2=42.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
+parking <- data.frame(lat = 42.448013, lon = -72.680663)%>%
+     spTransform(CRS(proj4_aea))
+
+
+
+parking_buffed <- streams_aea %>%
+  gBuffer(width = 10) %>%
+  spTransform(CRS("+init=epsg:4326"))
+
+
+
+```
+
+
+
+
+#THIS
 ```{r}
 group_campsite <- data.frame(lat = 42.450976, lon = -72.678154)
 remote_campsite <- data.frame(lat = 42.458570, lon =  -72.674732)
-parking <- data.frame(lat = 42.448013, lon = -72.680663)
+
+
 leaflet() %>%
   addTiles() %>%
   
   ##
-  addProviderTiles("Esri.WorldTopoMap", group = "Topography") %>%
+#  addProviderTiles("Esri.WorldTopoMap", group = "Topography") %>%
   
   addMarkers(lng = ~lon, lat = ~lat, data = group_campsite,
              popup = "Group Campsite") %>%
@@ -75,8 +96,11 @@ leaflet() %>%
   addMarkers(lng = ~lon, lat = ~lat, data = parking,
               popup = "Parking") %>%
 
-  addCircles(lng = ~lon, lat = ~lat, data = parking,
-             radius = 804.672, popup = "Parking Away")
+  #addCircles(lng = ~lon, lat = ~lat, data = parking,
+             #radius = 804.672, popup = "Parking Away")
+  addPolylines(data = parking_buffed, weight = 2, popup = "Parking Away")
+  
+  
 ```
 
 
@@ -115,7 +139,7 @@ summary(contours)
 plot(contours)
 ```
 
-1.add tiles (provider tile)*********
+1.add tiles (provider tile)*****
 add macleish layer (contours)
 web: world something 
 group toppgraphy
