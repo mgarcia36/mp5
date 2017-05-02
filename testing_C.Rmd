@@ -16,10 +16,6 @@ library(macleish)
 ```
 
 
-
-
-
-
 ```{r}
 # Download terrain data for Whatley
 url <- "http://wsgw.mass.gov/data/gispub/shape/contours5k/hp337.zip"
@@ -50,7 +46,7 @@ remove(whately_contours, conway_contours)
 # What happens when you intersect lines?
 trail_points <- macleish_contours %>%
   gIntersection(macleish_layers[['trails']])
-Draw map
+
 
 library(leaflet)
 m <- leaflet() %>%

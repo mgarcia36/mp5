@@ -23,6 +23,13 @@ parking <- data.frame(lat = 42.448013, lon = -72.680663)
 
 leaflet() %>%
   addTiles() %>%
+  
+  ####
+  
+  addProviderTiles("Esri.WorldTopoMap", group = "Topography") %>%
+  
+  #####
+  
   addMarkers(lng = ~lon, lat = ~lat, data = group_campsite,
              popup = "Group Campsite") %>%
   addMarkers(lng = ~lon, lat = ~lat, data = remote_campsite,
@@ -43,3 +50,4 @@ leaflet() %>%
   addCircles(lng = ~lon, lat = ~lat, data = parking,
              radius = 804.672, popup = "Parking Away")
 ```
+
