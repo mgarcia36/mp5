@@ -14,6 +14,7 @@ library(macleish)
 library(rgeos)
 library(sp)
 library(leaflet)
+library(rgdal)
 
 # how to map the challenge courses? (12)
 # add both campsites to leaflet plot
@@ -48,6 +49,7 @@ leaflet() %>%
   addMarkers((coordinates = ~lon, ~lat), data = macleish_layers[["challenge_courses"]]) %>%
 
   addCircles(lng = ~lon, lat = ~lat, data = parking,
-             radius = 804.672, popup = "Parking Away")
+             radius = 804.672, popup = "Parking Away") %>%
+   addCircleMarkers(  color="orange",data = macleish_layers[["challenge_courses"]])
 ```
 
