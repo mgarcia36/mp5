@@ -30,6 +30,15 @@ library(dplyr)
 ```
 
 ```{r}
+icons <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = 'black',
+  library = 'ion',
+  markerColor = "red"
+)
+```
+
+```{r}
 # Set up some special points
 group_campsite <- data.frame(lat = 42.450976, lon = -72.678154)
 remote_campsite <- data.frame(lat = 42.458570, lon =  -72.674732)
@@ -37,9 +46,18 @@ parking <- data.frame(lat = 42.448013, lon = -72.680663)
 ```
 
 ```{r}
+# label out the suggested campsite location
+suggested1 <- data.frame(lat = 42.448415, lon = -72.674897)
+
+
+```
+
+```{r}
 #Create the map
 leaflet() %>%
   addTiles() %>%
+  addAwesomeMarkers(lng = ~lon, lat = ~lat, data = suggested1,
+                    icon=icons,popup = "Suggested Campsite") %>%
   addMarkers(lng = ~lon, lat = ~lat, data = group_campsite,
              popup = "Group Campsite") %>%
   addMarkers(lng = ~lon, lat = ~lat, data = remote_campsite,
