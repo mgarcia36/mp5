@@ -49,6 +49,7 @@ parking <- data.frame(lat = 42.448013, lon = -72.680663)
 # label out the suggested campsite location
 suggested1 <- data.frame(lat = 42.448415, lon = -72.674897)
 
+suggested2 <-data.frame(lat = 42.444739, lon = -72.680350)
 
 ```
 
@@ -57,6 +58,8 @@ suggested1 <- data.frame(lat = 42.448415, lon = -72.674897)
 leaflet() %>%
   addTiles() %>%
   addAwesomeMarkers(lng = ~lon, lat = ~lat, data = suggested1,
+                    icon=icons,popup = "Suggested Campsite") %>%
+  addAwesomeMarkers(lng = ~lon, lat = ~lat, data = suggested2,
                     icon=icons,popup = "Suggested Campsite") %>%
   addMarkers(lng = ~lon, lat = ~lat, data = group_campsite,
              popup = "Group Campsite") %>%
